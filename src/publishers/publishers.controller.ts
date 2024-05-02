@@ -12,7 +12,6 @@ export class PublishersController {
   constructor(private readonly publishersService: PublishersService) {}
   @Post()
   async postPublisher(@Body('name') name: string) {
-    //나중에 dto로 바꿔보기
     const publisher = await this.publishersService.createPublisher(name);
     if (publisher instanceof BadRequestException) {
       return {

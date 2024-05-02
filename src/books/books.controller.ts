@@ -17,7 +17,6 @@ export class BooksController {
     @Body('title') title: string,
     @Body('publisher') publisher: string,
   ) {
-    //나중에 dto로 바꿔보기
     const book = await this.booksService.createBook(title, publisher);
     if (book instanceof BooksModel) {
       return {
