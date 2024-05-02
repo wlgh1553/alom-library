@@ -9,4 +9,8 @@ export class BooksService {
     @InjectRepository(BooksModel)
     private readonly booksRepository: Repository<BooksModel>,
   ) {}
+
+  async getAllBooks() {
+    return this.booksRepository.find();
+  }
 }
