@@ -1,13 +1,30 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import {
+  BadRequestException,
+  Body,
+  Controller,
+  Get,
+  Post,
+} from '@nestjs/common';
 import { PublishersService } from './publishers.service';
 
 @Controller('publishers')
 export class PublishersController {
   constructor(private readonly publishersService: PublishersService) {}
   @Post()
-  postPublisher(@Body('name') name: string) {
+  async postPublisher(@Body('name') name: string) {
     //나중에 dto로 바꿔보기
-    return this.publishersService.createPublisher(name);
+    const publisher = await this.publishersService.createPublisher(name);
+    if (publisher instanceof BadRequestException) {
+      return {
+        message: '잘못된 요청입니다.',
+        error: publisher.message,
+      };
+    } else {
+      return {
+        message: `성공적으로 생성되었습니다.`,
+        name: publisher.name,
+      };
+    }
   }
 
   //개발용

@@ -13,14 +13,12 @@ export class BooksService {
   ) {}
 
   async createBook(title: string, publisherName: string) {
-    console.log(title, publisherName);
-    //null은 아닌지 검증
     if (!title || !publisherName) {
       return new BadRequestException(
         '책제목 또는 출판사명을 작성하지 않았습니다.',
       );
     }
-    //존재하는 publisher인지 검증
+
     const publisher =
       await this.publisherService.getPublisherByName(publisherName);
     if (!publisher) {
@@ -28,9 +26,6 @@ export class BooksService {
     }
 
     const book = this.booksRepository.create({
-      // publisher: {
-      //   id: publisher.id
-      // }
       publisher,
       title,
     });
@@ -38,27 +33,27 @@ export class BooksService {
     return newBook;
   }
 
-  async findBooksByPublisher(publisherName: string) {
-    //null 검증
+  async findBookTitlesByPublisher(publisherName: string) {
     if (!publisherName) {
       return new BadRequestException(
         '책제목 또는 출판사명을 작성하지 않았습니다.',
       );
     }
 
-    //존재하는 publisher인지 검증
     const publisher =
       await this.publisherService.getPublisherByName(publisherName);
     if (!publisher) {
       return new BadRequestException('존재하지 않는 출판사입니다.');
     }
 
-    //모든 책 찾기
-    return this.booksRepository.find({
+    const books = this.booksRepository.find({
+      select: ['title'],
       where: {
         publisher,
       },
     });
+
+    return (await books).map((book) => book.title);
   }
 
   async getAllBooks() {

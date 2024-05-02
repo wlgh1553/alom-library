@@ -36,10 +36,6 @@ export class PublishersService {
       name,
       books: [],
     });
-    const newPublisher = await this.publishersRepository.save(publisher);
-    return {
-      message: '출판사가 성공적으로 생성되었습니다.',
-      name: newPublisher.name,
-    };
+    return await this.publishersRepository.save(publisher);
   }
 }

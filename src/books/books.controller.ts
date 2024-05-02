@@ -1,18 +1,51 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import {
+  BadRequestException,
+  Body,
+  Controller,
+  Get,
+  Param,
+  Post,
+} from '@nestjs/common';
 import { BooksService } from './books.service';
+import { BooksModel } from './entities/books.entity';
 
 @Controller('books')
 export class BooksController {
   constructor(private readonly booksService: BooksService) {}
   @Post()
-  postBook(@Body('title') title: string, @Body('publisher') publisher: string) {
+  async postBook(
+    @Body('title') title: string,
+    @Body('publisher') publisher: string,
+  ) {
     //나중에 dto로 바꿔보기
-    return this.booksService.createBook(title, publisher);
+    const book = await this.booksService.createBook(title, publisher);
+    if (book instanceof BooksModel) {
+      return {
+        message: '성공적으로 생성되었습니다.',
+        book: book.title,
+      };
+    } else {
+      return {
+        message: '잘못된 요청입니다.',
+        error: book.message,
+      };
+    }
   }
 
   @Get('/:publisher')
-  getBooksByPublisher(@Param('publisher') publisher: string) {
-    return this.booksService.findBooksByPublisher(publisher);
+  async getBooksByPublisher(@Param('publisher') publisher: string) {
+    const books = await this.booksService.findBookTitlesByPublisher(publisher);
+    if (books instanceof BadRequestException) {
+      return {
+        message: '잘못된 요청입니다.',
+        error: books.message,
+      };
+    } else {
+      return {
+        message: `${publisher} 출판사의 책입니다.`,
+        data: books,
+      };
+    }
   }
 
   //개발용
