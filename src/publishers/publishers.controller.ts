@@ -5,11 +5,9 @@ import { PublishersService } from './publishers.service';
 export class PublishersController {
   constructor(private readonly publishersService: PublishersService) {}
   @Post()
-  postPublisher(@Body('name') name: String) {
-    //null확인
-    //title 중복 확인
-    //db저장 {"name":"민음사", "data":[]}
-    //반환 (예시대로 반환하기)
+  postPublisher(@Body('name') name: string) {
+    //나중에 dto로 바꿔보기
+    return this.publishersService.createPublisher(name);
   }
 
   //개발용
