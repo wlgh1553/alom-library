@@ -12,6 +12,7 @@ import { BooksModel } from './entities/books.entity';
 @Controller('books')
 export class BooksController {
   constructor(private readonly booksService: BooksService) {}
+
   @Post()
   async postBook(
     @Body('title') title: string,
@@ -31,7 +32,7 @@ export class BooksController {
     }
   }
 
-  @Get('/:publisher')
+  @Get(':publisher')
   async getBooksByPublisher(@Param('publisher') publisher: string) {
     const books = await this.booksService.findBookTitlesByPublisher(publisher);
     if (books instanceof BadRequestException) {
@@ -47,7 +48,6 @@ export class BooksController {
     }
   }
 
-  //개발용
   @Get()
   getBooks() {
     return this.booksService.getAllBooks();

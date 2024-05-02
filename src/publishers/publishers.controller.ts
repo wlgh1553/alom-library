@@ -10,6 +10,7 @@ import { PublishersService } from './publishers.service';
 @Controller('publishers')
 export class PublishersController {
   constructor(private readonly publishersService: PublishersService) {}
+
   @Post()
   async postPublisher(@Body('name') name: string) {
     const publisher = await this.publishersService.createPublisher(name);
@@ -26,7 +27,6 @@ export class PublishersController {
     }
   }
 
-  //개발용
   @Get()
   getPublishers() {
     return this.publishersService.getAllPublishers();
