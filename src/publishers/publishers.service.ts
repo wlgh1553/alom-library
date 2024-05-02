@@ -11,7 +11,9 @@ export class PublishersService {
   ) {}
 
   async getAllPublishers() {
-    return this.publishersRepository.find();
+    return this.publishersRepository.find({
+      relations: ['books'],
+    });
   }
 
   async getPublisherByName(name: string) {
@@ -23,11 +25,6 @@ export class PublishersService {
   }
 
   async createPublisher(name: string) {
-    //null확인
-    //title 중복 확인
-    //db저장 {"name":"민음사", "data":[]}
-    //반환 (예시대로 반환하기)
-
     if (!name) {
       return new BadRequestException('출판사명을 입력하지 않았습니다.');
     }
