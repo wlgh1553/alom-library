@@ -10,6 +10,6 @@ export class PublishersService {
     private readonly publishersRepository: Repository<PublishersModel>,
   ) {}
   async getAllPublishers() {
-    return; //this.publishersRepository.find({??});
+    return this.publishersRepository.find();
   }
 }
