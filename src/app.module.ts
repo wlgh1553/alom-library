@@ -6,6 +6,7 @@ import { BooksModule } from './books/books.module';
 import { PublishersModule } from './publishers/publishers.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { PublishersModel } from './publishers/entities/publishers.entity';
+import { BooksModel } from './books/entities/books.entity';
 
 @Module({
   imports: [
@@ -22,7 +23,7 @@ import { PublishersModel } from './publishers/entities/publishers.entity';
       username: process.env.DB_USERNAME,
       password: process.env.DB_PASSWORD,
       database: process.env.DB_DATABASE,
-      entities: [PublishersModel],
+      entities: [PublishersModel, BooksModel],
       synchronize: true,
     }),
   ],
